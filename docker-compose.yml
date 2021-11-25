@@ -1,0 +1,28 @@
+version: "3.1"
+
+services:
+  mongodb:
+    container_name: mongodb-email-queue
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - app-network
+    volumes:
+      - ./.docker/mongodb/db:/data/db
+
+  redis:
+    container_name: redis-email-queue
+    image: wodby/redis
+    restart: always
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    ports:
+      - 6379:6379
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
